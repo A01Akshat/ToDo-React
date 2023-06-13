@@ -1,10 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Showtodo from './Showtodo';
+
+const getLocal=()=>{
+let list=localStorage.getItem('lists');
+if(list){
+  return JSON.parse(list);
+}
+else{
+  return [];
+}
+}
+
+
+
+
 const App = () => {
 
 
   const [task, settask] = useState("");
-  const [data, setdata] = useState([]);
+  const [data, setdata] = useState(getLocal());
 
   const eventHandler = (e) => {
     settask(e.target.value)
@@ -24,10 +38,12 @@ const App = () => {
     const finaldata=data.filter((currelem,index)=>{
       return index!=a;
     })
-    setdata(finaldata);
+    setdata(finaldata); 
   }
 
-
+  useEffect(()=>{
+    localStorage.setItem("lists",JSON.stringify(data))
+},[data]) 
 
   return (
     <>
